@@ -32,14 +32,14 @@ module.exports = (robot) ->
   robot.respond /(stop|pause)/i, (msg) ->
     speaker.pause (err, paused) ->
       if (!err || !paused)
-        msg.send "complete"
+        msg.send "SHUT IT"
       else
         msg.send "upps"
 
   robot.respond /(turn up|turn down) (.*)/i, (msg) ->
     volume_level = msg.match[2]
     speaker.setVolume volume_level, (err, data) ->
-      msg.send console.log(data)
+      msg.send "Let's get loud"
 
 
 
