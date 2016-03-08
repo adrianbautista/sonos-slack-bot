@@ -3,7 +3,7 @@ speaker = new sonos.Sonos(process.env.SONOS_IP)
 
 module.exports = (robot) ->
 
-  robot.respond /what's playing/i, (msg) ->
+  robot.respond /whats playing/i, (msg) ->
     speaker.currentTrack (err, track) ->
       msg.send "#{track.artist}: #{track.title}"
 
