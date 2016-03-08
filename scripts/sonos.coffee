@@ -23,7 +23,7 @@ module.exports = (robot) ->
 
   robot.respond /play next/i, (msg) ->
     speaker.next (err, nexted) ->
-      if !err && nexted)
+      if (!err && nexted)
         speaker.currentTrack (err, track) ->
           msg.send "#{track.artist}: #{track.title}"
       else
