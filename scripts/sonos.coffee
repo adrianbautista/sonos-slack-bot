@@ -1,4 +1,6 @@
 sonos = require('sonos')
+SonosDiscovery = require('sonos-discovery')
+discovery = new SonosDiscovery()
 speaker = new sonos.Sonos(process.env.SONOS_IP)
 
 module.exports = (robot) ->
@@ -47,9 +49,32 @@ module.exports = (robot) ->
   #   trackid = msg.match[1]
 
 
-  # robot.respond /spotify/i, (msg) ->
-  #   trackid = '5AdoS3gS47x40nBNlNmPQ8'
-  #   track_uri = 'x-sonos-spotify:spotify%3atrack%3a' + trackid
+  robot.respond /spotify/i, (msg) ->
+    # trackid = '5AdoS3gS47x40nBNlNmPQ8'
+    # track_uri = 'x-sonos-spotify:spotify%3atrack%3a' + trackid
+
+    spotifyUri = encodeURIComponent('spotify:album:19YQ10twgD5djBaBDUpH7o')
+    trackUri = 'x-sonos-spotify:' + spotifyUri + '?sid=9&flags=32&sn=1'
+    metadata = '<DIDL-Lite xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/" ' +
+               'xmlns:r="urn:schemas-rinconnetworks-com:metadata-1-0/" xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/">' +
+               "<item id=\"00030020#{trackUri}\"" + 'restricted="true"><upnp:class>object.item.audioItem.musicTrack</upnp:class>' +
+               '<desc id="cdudn" nameSpace="urn:schemas-rinconnetworks-com:metadata-1-0/">SA_RINCON2311_X_#Svc2311-0-Token</desc></item></DIDL-Lite>'
+
+    console.log('discovery', discovery)
+    player = discovery.getPlayer('Office')
+    console.log('player', player)
+    player.coordinator.addURIToQueue(trackUri, metadata)
+
+    # params =
+    #   uri: trackUri,
+    #   metadata: metadata
+
+    # speaker.queueNext params, (err, res) ->
+    #   if err
+    #     msg.send console.log(err)
+    #   else
+    #     msg.send console.log(res)
+
   #   rand = Math.floor(Math.random()*(99999999-10000000+1)+10000000)
 
   #   speaker.queueNext({
