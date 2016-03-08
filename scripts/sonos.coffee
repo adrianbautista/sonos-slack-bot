@@ -36,6 +36,12 @@ module.exports = (robot) ->
       else
         msg.send "upps"
 
+  robot.respond /(turn up|turn down) (.*)/i, (msg) ->
+    volume_level = msg.match[2]
+    speaker.setVolume volume_level, (err, data) ->
+      msg.send console.log(data)
+
+
 
   # robot.respond /queue (.*)/i, (msg) ->
   #   trackid = msg.match[1]
